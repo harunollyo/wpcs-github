@@ -12,7 +12,7 @@ jobs:
           uses: 10up/wpcs-action@stable
           with:
             enable_warnings: false # Enable checking for warnings (-w)
-            paths: 'src views'
+            paths: './views'
             standard: 'WordPress'
             repo_branch: 'master' # Branch of Standard repository
             phpcs_bin_path: 'phpcs' # Custom PHPCS bin path
