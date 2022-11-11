@@ -11,10 +11,8 @@ jobs:
         - name: WPCS check
           uses: 10up/wpcs-action@stable
           with:
-            enable_warnings: false # Enable checking for warnings (-w)
+            enable_warnings: 'false' # Enable checking for warnings (-w)
             paths: './views'
             standard: 'WordPress'
             repo_branch: 'master' # Branch of Standard repository
-            phpcs_bin_path: 'phpcs' # Custom PHPCS bin path
             use_local_config: 'false' # Use local config if available
-            extra_args: '' # Extra arguments passing to the command
