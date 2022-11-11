@@ -16,3 +16,4 @@ jobs:
             standard: 'WordPress'
             repo_branch: 'master' # Branch of Standard repository
             use_local_config: 'false' # Use local config if available
+            extra_args: '-d error_reporting="E_ALL&~E_DEPRECATED"'
