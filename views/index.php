@@ -6,5 +6,4 @@
  * @since 1.0.0
  */
 
-$name = $_POST['name'];
-$name = $_POST['name'];
+$name = sanitize_text_field( wp_unslash( $_POST['name'] ) );
