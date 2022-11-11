@@ -1,10 +1,10 @@
 <?php
 /**
-* This is test file
-*
-* @package Test
-* @since 1.0.0
-*/
+ * This is test file
+ *
+ * @package Test
+ * @since 1.0.0
+ */
 
 $name = $_POST['name'];
-$b=10;
+$b    = 10;
