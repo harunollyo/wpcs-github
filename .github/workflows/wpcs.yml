@@ -11,9 +11,10 @@ jobs:
         - name: WPCS check
           uses: 10up/wpcs-action@stable
           with:
+            repo_branch: 'dev' # Branch of Standard repository
+            paths: '.' # Paths to check, space separated like ./views ./controllers
+            excludes: '' # Paths to excludes, space separated
+            standard: 'WordPress' # Coding standard
             enable_warnings: 'false' # Enable checking for warnings (-w)
-            paths: './views'
-            standard: 'WordPress'
-            repo_branch: 'master' # Branch of Standard repository
             use_local_config: 'false' # Use local config if available
             extra_args: '-d error_reporting="E_ALL&~E_DEPRECATED"'
