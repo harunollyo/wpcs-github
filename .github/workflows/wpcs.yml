@@ -13,12 +13,15 @@ jobs:
           id: changed-files
           run: |
             echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRTUXB origin/main...${{ github.head_ref }} | grep \\.php$)"
-
+        
+        - name: Changed File Print
+          run: echo "${{ steps.changed-files.outputs.files }}"
+            
         - name: WPCS check
           uses: 10up/wpcs-action@stable
           with:
             repo_branch: 'dev' # Branch of Standard repository
-            paths: ${{ steps.changed-files.outputs.files }} # Paths to check, space separated like ./views ./controllers
+            paths: "${{ steps.changed-files.outputs.files }}" # Paths to check, space separated like ./views ./controllers
             excludes: '' # Paths to excludes, space separated
             standard: 'WordPress' # Coding standard
             enable_warnings: 'false' # Enable checking for warnings (-w)
