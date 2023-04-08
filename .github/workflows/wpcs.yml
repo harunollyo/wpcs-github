@@ -7,12 +7,12 @@ jobs:
       name: WPCS
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v1
+        - uses: actions/checkout@v2
         
         - name: Check changed files
           id: changed-files
           run: |
-            echo "$(git diff --name-only --diff-filter=ACMRTUXB origin/dev...${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')" >> $GITHUB_ENV
+            echo "$(git diff --name-only --diff-filter=ACMRTUXB origin/dev -- ${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')" >> $GITHUB_ENV
         
         - name: Changed File Print
           run: echo "${{ env.CHANGED_FILES }}"
