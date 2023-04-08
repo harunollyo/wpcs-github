@@ -9,10 +9,13 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         
+        - name: Fetch all branches
+          run: git fetch --all
+          
         - name: Check changed files
           id: changed-files
           run: |
-            echo "$(git diff --name-only --diff-filter=ACMRTUXB origin/dev..origin/${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')" >> $GITHUB_ENV
+            echo "$(git diff --name-only --diff-filter=ACMRTUXB origin/dev..${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')" >> $GITHUB_ENV
         
         - name: Changed File Print
           run: echo "${{ env.CHANGED_FILES }}"
