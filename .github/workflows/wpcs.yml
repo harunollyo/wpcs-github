@@ -15,7 +15,7 @@ jobs:
         - name: Check changed files
           id: changed-files
           run: |
-            echo "$(git diff --name-only --diff-filter=ACMRTUXB origin/dev..origin/${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')" | xargs -n 1 echo >> $GITHUB_ENV
+            echo "$(git diff --name-only --diff-filter=ACMRTUXB origin/dev..origin/${{ github.head_ref }} | grep \.php$ | sed -e 's/[[:space:]]*$//' | tr '\n' ' ')" | xargs -n 1 echo >> $GITHUB_ENV
         
         - name: Changed File Print
           run: echo "${{ env.CHANGED_FILES }}"
