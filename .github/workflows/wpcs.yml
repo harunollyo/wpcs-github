@@ -15,12 +15,13 @@ jobs:
         - name: Check changed files
           id: changed-files
           run: |
-            echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRTUXB origin/dev...origin/${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')"
+            echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRTUXB origin/dev...origin/${{ github.base_ref }} | grep \\.php$ | tr '\n' ' ')"
         
         - name: Changed File Print
           run: echo "${{ steps.changed-files.outputs.files }}"
             
         - name: WPCS check
+          if: ${{ steps.changed-files.outputs.changed_files > 0 }}
           uses: 10up/wpcs-action@stable
           with:
             repo_branch: 'dev' # Branch of Standard repository
