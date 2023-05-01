@@ -1,7 +1,9 @@
 name: WPCS check
 
-on: pull_request
-
+on: 
+  pull_request_target:
+    types: [opened, synchronize]
+    
 jobs:
   phpcs:
       name: WPCS
@@ -15,7 +17,7 @@ jobs:
         - name: Check changed files
           id: changed-files
           run: |
-            echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRTUXB origin/${{ github.base_ref }}...haruncpi/wpcs-github:test | grep \\.php$ | tr '\n' ' ')"
+            echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRTUXB origin/${{ github.base_ref }}...${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')"
         
         - name: Changed File Print
           run: echo "${{ steps.changed-files.outputs.files }}"
