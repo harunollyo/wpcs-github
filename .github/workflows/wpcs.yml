@@ -20,7 +20,7 @@ jobs:
             head=$(echo "${{ github.event.pull_request.head.repo.full_name }}" | tr '[:upper:]' '[:lower:]')
             compare="https://github.com/$base/compare/$head"
             echo "compare URL: $compare"
-            files=$(curl --silent --location -H "Authorization: Bearer ${{ secrets.ACTION_FLOW_TOKEN }}" $compare.diff)
+            files=$(curl --silent --location -H "Authorization: Bearer ${{ secrets.MY_GITHUB_TOKEN }}" $compare.diff)
             echo "changed files: $files"
             echo "::set-output name=files::$files"
         
