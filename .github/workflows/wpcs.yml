@@ -19,7 +19,7 @@ jobs:
           run: |
             base=$(echo "${{ github.event.pull_request.base.repo.full_name }}" | tr '[:upper:]' '[:lower:]')
             head=$(echo "${{ github.event.pull_request.head.repo.full_name }}" | tr '[:upper:]' '[:lower:]')
-            compare="https://github.com/$base/compare/$head"
+            compare="https://github.com/${{base}}/compare/${{head}}"
             files=$(curl --silent --location $compare.diff | grep \\.php$ | tr '\n' ' ')
             echo "::set-output name=files::$files"
         
