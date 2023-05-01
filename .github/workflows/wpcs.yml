@@ -1,35 +1,27 @@
-name: Compare changes on pull request
+name: PHP Coding Standards Check
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened]
 
 jobs:
-  compare_changes:
+  check:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.base.ref }}
-          repository: ${{ github.event.repository.full_name }}
+          ref: ${{ github.head_ref }}
 
-      - name: Fetch pull request head ref
+      - name: Check for PHP files changes
         run: |
-          git fetch https://github.com/${{ github.event.pull_request.head.repo.full_name }}.git ${{ github.event.pull_request.head.ref }}
-          git checkout FETCH_HEAD
-
-      - name: Create temporary branch
-        run: |
-          git checkout -b temp_branch
-
-      - name: Compare changes
-        run: |
-          changed_files=$(git diff --name-only dev temp_branch)
-          echo "Changed files: $changed_files"
-
-      - name: Delete temporary branch
-        run: |
-          git checkout dev
-          git branch -D temp_branch
+          php_files=$(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} --diff-filter=d -- '*.php')
+          if [ -n "$php_files" ]; then
+            echo "Changed PHP files:"
+            echo "$php_files"
+            composer install
+            vendor/bin/phpcs --standard=PSR4 $php_files
+          else
+            echo "No PHP files changes"
+          fi
