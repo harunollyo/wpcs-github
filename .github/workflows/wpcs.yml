@@ -11,11 +11,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+          repository: ${{ github.event.repository.full_name }}
+
+      - name: Fetch pull request head ref
+        run: |
+          git fetch https://github.com/${{ github.event.pull_request.head.repo.full_name }}.git ${{ github.event.pull_request.head.ref }}
+          git checkout FETCH_HEAD
 
       - name: Create temporary branch
         run: |
-          git fetch origin ${{ github.event.pull_request.head.ref }}
-          git checkout -b temp_branch FETCH_HEAD
+          git checkout -b temp_branch
 
       - name: Compare changes
         run: |
