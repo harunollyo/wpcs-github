@@ -17,7 +17,7 @@ jobs:
         - name: Check changed files
           id: changed-files
           run: |
-            echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRTUXB ${{ GITHUB_BASE_REF }}...${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')"
+            echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRTUXB origin/dev...${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')"
         
         - name: Changed File Print
           run: echo "${{ steps.changed-files.outputs.files }}"
