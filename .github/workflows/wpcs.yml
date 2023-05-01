@@ -1,40 +1,28 @@
-name: WPCS check
+name: Compare changes on pull request
 
-on: 
-  pull_request_target
-    
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
-  phpcs:
-      name: WPCS
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        
-        - name: Fetch all branches
-          run: git fetch --all --prune
-          
-        - name: Check changed files
-          id: changed-files
-          run: |
-            base=$(echo "${{ github.event.pull_request.base.repo.full_name }}" | tr '[:upper:]' '[:lower:]')
-            head=$(echo "${{ github.event.pull_request.head.repo.full_name }}" | tr '[:upper:]' '[:lower:]')
-            compare="https://github.com/$base/compare/$head"
-            echo "compare URL: $compare"
-            files=$(curl --silent --location $compare.diff --header "Authorization: Bearer ${{ secrets.MY_GITHUB_TOKEN }}")
-            echo "changed files: $files"
-            echo "::set-output name=files::$files"
-        
-        - name: Changed File Print
-          run: echo "${{ steps.changed-files.outputs.files }}"
-            
-        - name: WPCS check
-          if: ${{ steps.changed-files.outputs.changed_files > 0 }}
-          uses: 10up/wpcs-action@stable
-          with:
-            repo_branch: 'dev' # Branch of Standard repository
-            paths: "${{ steps.changed-files.outputs.files }}" # Paths to check, space separated like ./views ./controllers
-            excludes: '' # Paths to excludes, space separated
-            standard: 'WordPress' # Coding standard
-            enable_warnings: 'false' # Enable checking for warnings (-w)
-            use_local_config: 'false' # Use local config if available
-            extra_args: '-d error_reporting="E_ALL&~E_DEPRECATED"'
+  compare_changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create temporary branch
+        run: |
+          git fetch origin ${{ github.event.pull_request.head.ref }}
+          git checkout -b temp_branch FETCH_HEAD
+
+      - name: Compare changes
+        run: |
+          changed_files=$(git diff --name-only dev temp_branch)
+          echo "Changed files: $changed_files"
+
+      - name: Delete temporary branch
+        run: |
+          git checkout dev
+          git branch -D temp_branch
