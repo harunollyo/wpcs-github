@@ -21,6 +21,7 @@ jobs:
             compare="https://github.com/$base/compare/$head"
             echo "compare URL: $compare"
             files=$(curl --silent --location $compare.diff | grep \\.php$ | cut -d ' ' -f 3 | cut -c 3- | tr '\n' ' ')
+            echo "changed files: $files"
             echo "::set-output name=files::$files"
         
         - name: Changed File Print
