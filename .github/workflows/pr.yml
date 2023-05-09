@@ -1,0 +1,24 @@
+name: PR checker
+
+on:
+  pull_request:
+    branches: [master]
+    types: [opened, edited, reopened]
+
+jobs:
+  check-pr-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        id: check_branch
+        run: |
+          if [ "${{ github.event.pull_request.head.ref }}" == "master" ]; then
+            echo "::set-output name=is_master_branch::true"
+          else
+            echo "::set-output name=is_master_branch::false"
+          fi
+      - name: Close PR
+        if: steps.check_branch.outputs.is_master_branch == 'true'
+        uses: peter-evans/close-pull-request@v1
+        with:
+          message: 'Direct pull requests to the master branch are not allowed'
