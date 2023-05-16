@@ -26,9 +26,11 @@ jobs:
             # Extract the files from the 'changed-files' output variable
             files="${{ steps.changed-files.outputs.files }}"
 
-            # Use a custom shell script to count the number of files
-            file_count=$(echo "$files" | tr ' ' '\n' | wc -l | xargs)
-            echo "$file_count"
+            # Use a custom shell script to count the number of .php files
+            file_count=$(echo "$files" | tr ' ' '\n' | grep -E '\.php$' | wc -l | xargs)
+          
+            # Set an environment variable with the total .php file count
+            echo "TOTAL_PHP_FILES=$file_count" >> $GITHUB_ENV
             
         - name: WPCS check
           uses: 10up/wpcs-action@stable
