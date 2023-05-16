@@ -1,27 +1,36 @@
-name: PHP Coding Standards Check
+name: WPCS check
 
-on:
-  pull_request:
-    types: [opened]
+on: pull_request
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
-
-      - name: Check for PHP files changes
-        run: |
-          php_files=$(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} --diff-filter=d -- '*.php')
-          if [ -n "$php_files" ]; then
-            echo "Changed PHP files:"
-            echo "$php_files"
-            composer install
-            vendor/bin/phpcs --standard=PSR4 $php_files
-          else
-            echo "No PHP files changes"
-          fi
+  phpcs:
+      name: WPCS
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        
+        - name: Fetch all branches
+          run: git fetch --all
+          
+        - name: Check changed files
+          id: changed-files
+          run: |
+            echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRTUXB origin/dev...origin/${{ github.head_ref }} | grep \\.php$ | tr '\n' ' ')"
+        
+        - name: Changed File Print
+          run: echo "${{ steps.changed-files.outputs.files }}"
+        
+        - name: Total PHP file change
+          run: echo "${{ steps.changed-files.outputs.changed_files }}"
+            
+        - name: WPCS check
+          if: ${{ steps.changed-files.outputs.changed_files > 0 }}
+          uses: 10up/wpcs-action@stable
+          with:
+            repo_branch: 'dev' # Branch of Standard repository
+            paths: "${{ steps.changed-files.outputs.files }}" # Paths to check, space separated like ./views ./classes ./models
+            excludes: '' # Paths to excludes, space separated
+            standard: 'WordPress' # Coding standard
+            enable_warnings: 'false' # Enable checking for warnings (-w)
+            use_local_config: 'false' # Use local config if available
+            extra_args: '-d error_reporting="E_ALL&~E_DEPRECATED"'
