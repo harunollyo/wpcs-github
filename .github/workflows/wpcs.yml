@@ -25,7 +25,7 @@ jobs:
           run: echo "${steps.changed-files.outputs.files.length()}"
             
         - name: WPCS check
-          if: steps.changed-files.outputs.files.length() > 0
+          if: "${steps.changed-files.outputs.files.length() > 0"
           uses: 10up/wpcs-action@stable
           with:
             repo_branch: 'dev' # Branch of Standard repository
