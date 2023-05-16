@@ -20,9 +20,15 @@ jobs:
         - name: Changed File Print
           run: echo "${{ steps.changed-files.outputs.files }}"
         
-        - name: Total Length
-          id: length-file
-          run: echo "${steps.changed-files.outputs.files.length()}"
+        - name: Count total files
+          id: count-files
+          run: |
+            # Extract the files from the 'changed-files' output variable
+            files="${{ steps.changed-files.outputs.files }}"
+
+            # Use a custom shell script to count the number of files
+            file_count=$(echo "$files" | tr ' ' '\n' | wc -l | xargs)
+            echo "$file_count"
             
         - name: WPCS check
           uses: 10up/wpcs-action@stable
