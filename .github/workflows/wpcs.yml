@@ -26,15 +26,14 @@ jobs:
             # Extract the files from the 'changed-files' output variable
             files="${{ steps.changed-files.outputs.files }}"
           
-            # Split the files string by space to create an array
-            IFS=' ' read -ra files_array <<< "$files"
-          
             # Count the number of files in the array
             file_count=${#files_array[@]}
-            echo "${file_count}"
+          
+            # Set an environment variable with the total file count
+            echo "TOTAL_FILES=$file_count" >> $GITHUB_ENV
             
         - name: WPCS check
-          if: ${{ steps.count-files > 0 }}
+          if: env.TOTAL_FILES > 0
           uses: 10up/wpcs-action@stable
           with:
             repo_branch: 'dev' # Branch of Standard repository
