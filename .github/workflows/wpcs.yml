@@ -20,20 +20,12 @@ jobs:
         - name: Changed File Print
           run: echo "${{ steps.changed-files.outputs.files }}"
         
-        - name: Count Total Files
-          id: count-files
-          run: |
-            # Extract the files from the 'changed-files' output variable
-            files="${{ steps.changed-files.outputs.files }}"
-          
-            # Count the number of files in the array
-            file_count=${#files_array[@]}
-          
-            # Set an environment variable with the total file count
-            echo "TOTAL_FILES=$file_count" >> $GITHUB_ENV
+        - name: Total Length
+          id: length-file
+          run: echo "${steps.changed-files.outputs.files.length()}"
             
         - name: WPCS check
-          if: env.TOTAL_FILES > 0
+          if: steps.changed-files.outputs.files.length() > 0
           uses: 10up/wpcs-action@stable
           with:
             repo_branch: 'dev' # Branch of Standard repository
