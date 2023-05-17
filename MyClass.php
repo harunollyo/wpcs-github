@@ -1,6 +1,8 @@
 <?php
 /**
-MyClass Doc
+* MyClass Doc
+* @package ABC
 */
+
 class MyClass{
 }
