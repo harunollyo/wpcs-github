@@ -44,3 +44,4 @@ jobs:
             enable_warnings: 'false' # Enable checking for warnings (-w)
             use_local_config: 'false' # Use local config if available
             extra_args: '-d error_reporting="E_ALL&~E_DEPRECATED"'
+            phpcs_args: --standard=WordPress --exclude=WordPress.Files.FileName.NotHyphenatedLowercase,WordPress.Files.FileName.InvalidClassFileName
