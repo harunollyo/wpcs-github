@@ -37,7 +37,7 @@ jobs:
           if: ${{ env.TOTAL_PHP_FILES > 0 }}
           uses: 10up/wpcs-action@stable
           with:
-            phpcs_args: |
+            args: |
               --standard=WordPress
               --ignore=WordPress.Files.FileName.NotHyphenatedLowercase
               --ignore=WordPress.Files.FileName.InvalidClassFileName
