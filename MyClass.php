@@ -1,14 +1,16 @@
 <?php
 /**
  * MyClass Doc
- * @package ABC
+ *
+ * @package MyApp
  **/
 
 namespace MyApp;
 
 class MyClass {
-  /**
-   * @var string
-   **/
-  public $doc;
+	public function do_save() {
+		$name = $_POST['name'];
+
+		// save to db;
+	}
 }
