@@ -4,5 +4,11 @@
  * @package ABC
  **/
 
-class MyClass{
+namespace MyApp;
+
+class MyClass {
+  /**
+   * @var string
+   **/
+  public $doc;
 }
