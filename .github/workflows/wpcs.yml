@@ -20,10 +20,13 @@ jobs:
       - name: Install Composer dependencies
         run: composer install
 
+      - name: Fetch All Branches
+        run: git fetch --all --prune
+          
       - name: Get modified PHP files
         id: changed-files
         run: |
-          git diff --name-only origin/dev...origin/${{ github.head_ref }} | grep '\.php$' > changed-files.txt
+          git diff --name-only origin/dev...HEAD | grep '\.php$' > changed-files.txt
           echo "Modified PHP files:"
           cat changed-files.txt
 
