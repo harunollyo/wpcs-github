@@ -23,7 +23,7 @@ jobs:
       - name: Get modified PHP files
         id: changed-files
         run: |
-          git diff --name-only HEAD^..HEAD | grep '\.php$' > changed-files.txt
+          git diff --name-only dev...HEAD | grep '\.php$' > changed-files.txt
           echo "Modified PHP files:"
           cat changed-files.txt
 
