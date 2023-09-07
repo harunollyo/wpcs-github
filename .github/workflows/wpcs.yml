@@ -31,6 +31,5 @@ jobs:
           cat changed-files.txt
 
       - name: Check WordPress Coding Standards
-        run: |
-            vendor/bin/phpcs --standard=WordPress-Core MyClass.php index.php
+        run: phpcs --standard=WordPress-Core MyClass.php index.php
 
