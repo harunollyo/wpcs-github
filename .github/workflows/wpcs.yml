@@ -42,5 +42,5 @@ jobs:
             excludes: '' # Paths to excludes, space separated
             standard: 'WordPress' # Coding standard
             enable_warnings: 'false' # Enable checking for warnings (-w)
-            use_local_config: 'false' # Use local config if available
+            use_local_config: 'true' # Use local config if available
             extra_args: '-d error_reporting="E_ALL&~E_DEPRECATED"'
