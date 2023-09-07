@@ -1,18 +1,34 @@
-name: WordPress CS check
-on: pull_request
+name: WordPress Coding Standards Check (Modified Lines)
+on:
+  pull_request:
+    branches:
+      - dev # Change this to your dev branch
 jobs:
   phpcs:
-    name: WPCS
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
 
-      - name: WPCS check
-        uses: 10up/wpcs-action@stable
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install PHP and Composer
+        uses: shivammathur/setup-php@v2
         with:
-          repo_branch: 'dev' # Branch name
-          paths: '.' # Paths to check, space separated
-          excludes: '' # Paths to excludes, space separated
-          standard: 'WordPress' # CS name
-          enable_warnings: 'false' # Enable checking for warnings (-w)
-          extra_args: '-d error_reporting="E_ALL&~E_DEPRECATED"'
+          php-version: '7.4' # Choose the PHP version you want
+
+      - name: Install Composer dependencies
+        run: composer install
+
+      - name: Get modified PHP files
+        id: changed-files
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.php$' > changed-files.txt
+          echo "Modified PHP files:"
+          cat changed-files.txt
+
+      - name: Check WordPress Coding Standards
+        run: |
+          while IFS= read -r file; do
+            vendor/bin/phpcs --standard=WordPress-Core $file
+          done < changed-files.txt
+
