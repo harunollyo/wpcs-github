@@ -20,6 +20,7 @@ class MyClass {
 	 */
 	public function do_save() {
 		$name = $_POST['name'];
+		$username = $_POST['username'];
 
 		// Save to db.
 	}
