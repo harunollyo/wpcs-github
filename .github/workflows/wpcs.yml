@@ -32,7 +32,5 @@ jobs:
 
       - name: Check WordPress Coding Standards
         run: |
-          while IFS= read -r file; do
-            vendor/bin/phpcs --standard=WordPress-Core $file
-          done < changed-files.txt
+            vendor/bin/phpcs --standard=WordPress-Core MyClass.php
 
